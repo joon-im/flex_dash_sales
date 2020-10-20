@@ -1,0 +1,12 @@
+name: veh_parts_sales_dash
+title: veh_parts_sales_dash
+username:
+account: joon
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 985491
+bundleId: 2204865
+url: https://joon.shinyapps.io/veh_parts_sales_dash/
+when: 1562392949.16971
+asMultiple: FALSE
+asStatic: FALSE

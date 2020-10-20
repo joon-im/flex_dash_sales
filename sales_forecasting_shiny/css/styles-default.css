@@ -1,0 +1,227 @@
+
+/* FONTS */
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600|Roboto:300&display=swap');
+
+.navbar-brand {
+    font-family: "Montserrat", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "Montserrat", sans-serif;
+    color: #022c70;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #022c70;
+}
+
+/* NAVBAR */
+.navbar-inverse {
+    background-color: #022c70;
+    border-color: #fff;
+}
+
+.navbar-logo {
+    width: 50px;
+}
+
+
+/* SIDEBAR */
+.section.sidebar {
+    background-color: #E0E0E0;
+}
+
+@media screen and (min-width: 767px) {
+    #dashboard-container {
+    padding-left: 310px !important;
+    }
+
+.sidebar {
+    width: 310px !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .chart_shim {
+    overflow-y: scroll;
+}
+    }
+
+.sidebar {
+    width: 310px !important;
+    }
+}
+
+
+/* SWITCH */
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info {
+    color: #fff;
+    background: #18bc9c;
+}
+
+
+/* BUTTONS */
+.btn-default {
+    color: #424242;
+    background-color: #ffffff;
+    border-color: #cccccc
+}
+
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 43px;
+    padding: 10px 18px;
+    font-size: 15px;
+    line-height: 1.42857143;
+    color: #424242;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #cccccc;
+    border-radius: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+
+.btn-default:focus,.btn-default.focus {
+    color: #424242;
+    background-color: #ffffff;
+    border-color: #022c70
+}
+
+.btn-default:hover {
+    color: #ffffff;
+    background-color: #022c70;
+    border-color: #022c70
+}
+
+.btn-default:active,.btn-default.active,.open>.dropdown-toggle.btn-default {
+    color: #424242;
+    background-color: #ffffff;
+    border-color: #cccccc
+}
+
+.btn-default:active:hover,.btn-default.active:hover,.open>.dropdown-toggle.btn-default:hover,.btn-default:active:focus,.btn-default.active:focus,.open>.dropdown-toggle.btn-default:focus,.btn-default:active.focus,.btn-default.active.focus,.open>.dropdown-toggle.btn-default.focus {
+    color: #ffffff;
+    background-color: #022c70;
+    border-color: #022c70
+}
+
+.btn-default:active,.btn-default.active,.open>.dropdown-toggle.btn-default {
+    background-image: none
+}
+
+.btn-default.disabled:hover,.btn-default[disabled]:hover,fieldset[disabled] .btn-default:hover,.btn-default.disabled:focus,.btn-default[disabled]:focus,fieldset[disabled] .btn-default:focus,.btn-default.disabled.focus,.btn-default[disabled].focus,fieldset[disabled] .btn-default.focus {
+    background-color: #222222;
+    border-color: #222222
+}
+
+.btn-default .badge {
+    color: #222222;
+    background-color: #ffffff
+}
+
+
+
+
+
+/* BUTTON - INFO */
+
+.btn-info {
+    color: #424242;
+    background-color: #ffffff;
+    border-color: #BDBDBD
+}
+
+.btn-info:focus,.btn-info.focus {
+    color: #ffffff;
+    background-color: #90A4AE;
+    border-color: #90A4AE
+}
+
+.btn-info:hover {
+    color: #ffffff;
+    background-color: #90A4AE;
+    border-color: #90A4AE
+}
+
+.btn-info:active,.btn-info.active,.open>.dropdown-toggle.btn-info {
+    color: #ffffff;
+    background-color: #90A4AE;
+    border-color: #90A4AE
+}
+
+.btn-info:active:hover,.btn-info.active:hover,.open>.dropdown-toggle.btn-info:hover,.btn-info:active:focus,.btn-info.active:focus,.open>.dropdown-toggle.btn-info:focus,.btn-info:active.focus,.btn-info.active.focus,.open>.dropdown-toggle.btn-info.focus {
+    color: #ffffff;
+    background-color: #90A4AE;
+    border-color: #90A4AE
+}
+
+.btn-info:active,.btn-info.active,.open>.dropdown-toggle.btn-info {
+    background-image: none
+}
+
+.btn-info.disabled:hover,.btn-info[disabled]:hover,fieldset[disabled] .btn-info:hover,.btn-info.disabled:focus,.btn-info[disabled]:focus,fieldset[disabled] .btn-info:focus,.btn-info.disabled.focus,.btn-info[disabled].focus,fieldset[disabled] .btn-info.focus {
+    background-color: #9954bb;
+    border-color: #9954bb
+}
+
+.btn-info .badge {
+    color: #9954bb;
+    background-color: #ffffff
+}
+
+.btn-group>.btn-group:first-child:not(:last-child)>.btn:last-child, .btn-group>.btn-group:first-child:not(:last-child)>.dropdown-toggle {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+.btn-group>.btn-group:last-child:not(:first-child)>.btn:first-child {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+
+
+
+/* VALUE BOXES */
+
+.bg-danger {
+    background-color: #D32F2F;
+}
+
+.bg-warning {
+    background-color: #FB8C00;
+}
+
+.bg-success {
+    background-color: #009688;
+}
+
+
+/* SWITCH */
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info {
+    color: #ffffff;
+    background: #022c70;
+}
+
+
+/* CHART TITLE */
+
+.chart-title {
+    font-weight: 520;
+    font-family: "Montserrat", sans-serif;
+}
+
+.chart-title {
+    border-bottom: 1px solid #ffffff;
+    color: #757575;
+    font-size: 14px;
+}
+

@@ -1,0 +1,210 @@
+---
+title: "Time Series Forecasting"
+output: html_notebook
+---
+
+# Goal
+
+Predict the next 3 months of daily quantities of vehicle parts ordered. 
+
+# 1 . Set Up
+
+## 1.1 Load Libraries
+
+```{r}
+# Main Packages
+library(tidyverse)
+library(lubridate)
+library(tidyquant)
+library(plotly)
+library(ggthemes)
+
+# Time Based Feature Extraction
+library(timetk)
+
+# Holidays
+library(timeDate)
+
+# Weather Data
+library(riem)
+
+# Forecasting
+library(forecast)
+library(sweep)
+
+# Machine Learning 
+library(parsnip)
+library(yardstick)
+library(glmnet)
+```
+
+## 1.2 Load Data
+
+```{r}
+# Load data
+sales_data_raw <- read_csv('sales_data_sample.csv') 
+data <- sales_data_raw
+data
+```
+
+
+# 2. Data Preprocessing
+
+## 2.1 Parts Table
+
+```{r}
+# 
+parts_d_tbl_all <- data %>%
+  select(ORDERDATE, ORDERNUMBER, QUANTITYORDERED, PRICEEACH, 
+         PRODUCTLINE, PRODUCTCODE, STATUS) %>%
+  mutate(ORDERDATE = mdy_hm(ORDERDATE),
+         ORDERDATE = as_datetime(ORDERDATE)) %>%
+  group_by(ORDERDATE, PRODUCTCODE) %>%
+  summarise(QUANTITYORDERED)
+
+parts_d_tbl <- parts_d_tbl_all %>%
+  group_by(ORDERDATE) %>%
+  summarise(TOTAL = sum(QUANTITYORDERED))
+```
+
+## 2.2 Quantity Ordered Over Time
+
+```{r}
+# Plot it
+g <- parts_d_tbl %>%
+  ggplot(aes(ORDERDATE, TOTAL)) + 
+  geom_line(alpha = 0.5, color = '#2c3e50') + 
+  geom_smooth(method = "loess", span = 0.5) + 
+  theme_tq() + 
+  scale_color_tq() + 
+  labs(x="",y="Quantity",title=" Quantity Ordered Over Time")
+
+ggplotly(g) %>%
+  layout(xaxis = list(rangeslider = list(type = "date")))
+```
+
+> Note the seasonality in the data. 
+
+## 2.3 Data Augmentation
+
+- Add time-based features using `timetk`
+- Add holidays using `timedate`
+
+```{r}
+# Add time-based features
+parts_d_tbl <- parts_d_tbl %>%
+  tk_augment_timeseries_signature() %>%
+  select(ORDERDATE, TOTAL, index.num, year, half, quarter, month.lbl, day, wday.lbl)
+
+# Create holidays
+holidays <- holidayNYSE(year = c(2003, 2004, 2005)) %>% ymd()
+
+# Add holidays feature
+parts_d_tbl <- parts_d_tbl %>%
+  mutate(holiday = case_when(
+    ORDERDATE %in% holidays ~ 1, 
+    TRUE ~ 0
+  ))
+```
+
+# 3. Exploratory Analysis
+
+## 3.1 Autocorrelation
+
+
+```{r}
+autocorrelate <- function(data, value, lags = 0:20) {
+    
+    value_expr <- enquo(value)
+    
+    acf_values <- data %>%
+        select(!! value_expr) %>%
+        pull() %>%
+        acf(lag.max = tail(lags, 1), plot = FALSE) %>%
+        .$acf %>% # Remove text
+        .[,,1]
+    
+    ret <- tibble(acf = acf_values) %>%
+        rowid_to_column(var = "lag") %>% # Add lag columns
+        mutate(lag = lag - 1) %>% 
+        filter(lag %in% lags) 
+    
+    return(ret)
+} 
+
+g <- parts_d_tbl %>%
+    autocorrelate(TOTAL, lags = 0:nrow(.)) %>%
+    ggplot(aes(lag, acf)) +
+    geom_point(alpha = 0.5, color = "#2c3e50") +
+    expand_limits(y = c(-1, 1)) +
+    theme_tq() +
+    labs(title = "Autocorrelation")
+
+ggplotly(g)
+```
+
+## 3. Modeling
+
+## 3.1 Train-Test-Split
+
+```{r}
+train_test_split_date <- ymd("2005-03-01")
+
+train_tbl <- parts_d_tbl %>%
+    filter(ORDERDATE < train_test_split_date)
+
+test_tbl <- parts_d_tbl %>%
+    filter(ORDERDATE >= train_test_split_date)
+
+# What Autocorrelation can we use in a multivariate model?
+nrow(test_tbl)
+```
+
+
+## 3.2 Evaluate 60-Day Moving Average
+
+```{r}
+moving_average_train_tbl <- train_tbl %>%
+    select(ORDERDATE, TOTAL) %>%
+    mutate(moving_average = rollmean(TOTAL, k = 30, na.pad = TRUE, align = "right")) 
+
+g <- moving_average_train_tbl %>%
+    bind_rows(test_tbl %>% select(ORDERDATE, TOTAL)) %>%
+    fill(moving_average, .direction = "down") %>%
+    mutate(ORDERDATE = as.Date(as.character(ORDERDATE))) %>%
+    ggplot(aes(ORDERDATE, TOTAL)) +
+    geom_vline(xintercept = train_test_split_date, color = "red") +
+    geom_point(color = "#2c3e50") +
+    geom_line(aes(y = moving_average), size = 1, color = "blue") +
+    theme_tq() 
+
+ggplotly(g)
+
+test_tbl %>%
+    select(TOTAL) %>%
+    mutate(moving_average = moving_average_train_tbl %>% 
+               tail(1) %>% 
+               pull(moving_average)) %>%
+    mae(TOTAL, moving_average)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+name: sales_dashboard_vehicle_products
+title: sales_dashboard_vehicle_products
+username:
+account: joon
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 985481
+bundleId: 2160273
+url: https://joon.shinyapps.io/sales_dashboard_vehicle_products/
+when: 1560817166.32373
+asMultiple: FALSE
+asStatic: FALSE
